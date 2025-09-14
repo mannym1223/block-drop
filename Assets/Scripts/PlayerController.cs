@@ -48,13 +48,20 @@ public class PlayerController : MonoBehaviour
         if (goForward)
         {
             direction.z += currentMoveValue.x;
-            stepDistance += moveStep;
         }
         if (goRight)
         {
             direction.x += currentMoveValue.y;
-			stepDistance += moveStep;
 		}
+
+        if(goForward && goRight)
+        {
+            stepDistance = Mathf.Sqrt(moveStep * 2); // get value of diagonal
+        }
+        else
+        {
+            stepDistance = moveStep;
+        }
 
         while (stepDistance > 0f)
         {
