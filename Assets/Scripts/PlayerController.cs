@@ -25,8 +25,8 @@ public class PlayerController : MonoBehaviour
 
 		if (currentMoveValue != null && !isMoving && activeBlock != null)
 		{
-            bool goForward = Physics.Raycast(activeBlock.transform.position, Vector3.forward * currentMoveValue.x, moveStep, LayerMask.GetMask("Spawn"));
-			bool goRight = Physics.Raycast(activeBlock.transform.position, Vector3.right * currentMoveValue.y, moveStep, LayerMask.GetMask("Spawn"));
+            bool goForward = activeBlock.CanMove(Vector3.forward * currentMoveValue.x, moveStep);
+            bool goRight = activeBlock.CanMove(Vector3.right * currentMoveValue.y, moveStep);
 
             if (goForward || goRight) 
             {
@@ -34,7 +34,7 @@ public class PlayerController : MonoBehaviour
             }
 			//Debug.Log(currentMoveValue);
 
-            Debug.Log(goForward);
+            //Debug.Log(goForward);
 		}
 	}
 
@@ -53,6 +53,7 @@ public class PlayerController : MonoBehaviour
         {
             direction.x += currentMoveValue.y;
 		}
+        direction.Normalize();
 
         if(goForward && goRight)
         {
@@ -66,11 +67,9 @@ public class PlayerController : MonoBehaviour
         while (stepDistance > 0f)
         {
             transform.Translate(direction * moveSpeed * Time.deltaTime);
-            Debug.Log(direction * moveSpeed * Time.deltaTime);
             stepDistance -= Time.deltaTime;
             yield return new WaitForFixedUpdate();
         }
-		Debug.Log("Exiting move" + goForward);
 		isMoving = false;
     }
 }

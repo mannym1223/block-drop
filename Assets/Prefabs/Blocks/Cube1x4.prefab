@@ -12,7 +12,8 @@ GameObject:
   - component: {fileID: 8733862923517155199}
   - component: {fileID: 3068911657331671458}
   - component: {fileID: 2338970193962733985}
-  m_Layer: 0
+  - component: {fileID: 7137802772150063746}
+  m_Layer: 6
   m_Name: Cube (3)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -111,6 +112,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7137802772150063746
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 307737904481898392}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a34926d2d8f86ca44845ad4a62777b9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BaseCube
 --- !u!1 &1203279356686301789
 GameObject:
   m_ObjectHideFlags: 0
@@ -123,7 +136,8 @@ GameObject:
   - component: {fileID: 8076841695574467319}
   - component: {fileID: 2586499044195543237}
   - component: {fileID: 26871781085785432}
-  m_Layer: 0
+  - component: {fileID: 4336993055063549353}
+  m_Layer: 6
   m_Name: Cube
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -222,6 +236,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4336993055063549353
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1203279356686301789}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a34926d2d8f86ca44845ad4a62777b9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BaseCube
 --- !u!1 &2147808869729529909
 GameObject:
   m_ObjectHideFlags: 0
@@ -234,7 +260,8 @@ GameObject:
   - component: {fileID: 6690500715723326850}
   - component: {fileID: 7803691082428163110}
   - component: {fileID: 1061397318936776956}
-  m_Layer: 0
+  - component: {fileID: 3587438011784935870}
+  m_Layer: 6
   m_Name: Cube (2)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -333,6 +360,18 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &3587438011784935870
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2147808869729529909}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a34926d2d8f86ca44845ad4a62777b9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BaseCube
 --- !u!1 &8185657509794940430
 GameObject:
   m_ObjectHideFlags: 0
@@ -344,7 +383,7 @@ GameObject:
   - component: {fileID: 3295784681214138675}
   - component: {fileID: 2476119425696855751}
   - component: {fileID: 3127003044587743591}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Cube1x4
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -406,6 +445,11 @@ MonoBehaviour:
   width: 2
   length: 2
   height: 1
+  cubes:
+  - {fileID: 4336993055063549353}
+  - {fileID: 3587438011784935870}
+  - {fileID: 7483693758868123932}
+  - {fileID: 7137802772150063746}
 --- !u!1 &9131312790758119935
 GameObject:
   m_ObjectHideFlags: 0
@@ -418,7 +462,8 @@ GameObject:
   - component: {fileID: 5893689158845857143}
   - component: {fileID: 5821601982861017740}
   - component: {fileID: 4743274537224587783}
-  m_Layer: 0
+  - component: {fileID: 7483693758868123932}
+  m_Layer: 6
   m_Name: Cube (1)
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -517,3 +562,15 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 1, y: 1, z: 1}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &7483693758868123932
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 9131312790758119935}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a34926d2d8f86ca44845ad4a62777b9b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BaseCube
