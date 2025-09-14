@@ -14,11 +14,12 @@ public class BlockDropManager : MonoBehaviour
 
     public GridManager gridManager;
     public Transform spawnPoint;
+    public PlayerController player;
 
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        Instantiate(gridManager.BlockList[0], spawnPoint.position, spawnPoint.rotation);
+        player.activeBlock = Instantiate(gridManager.BlockList[0], spawnPoint.position, spawnPoint.rotation, spawnPoint);
     }
 
     // Update is called once per frame
