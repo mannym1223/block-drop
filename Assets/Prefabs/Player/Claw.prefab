@@ -167,8 +167,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
   rope: {fileID: 1360017325987858984}
+  activeBlock: {fileID: 0}
   moveStep: 1
-  moveSpeed: 10
+  moveSpeed: 2
 --- !u!1 &3698880093681139986
 GameObject:
   m_ObjectHideFlags: 0

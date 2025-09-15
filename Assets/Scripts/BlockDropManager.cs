@@ -19,6 +19,7 @@ public class BlockDropManager : MonoBehaviour
     public PlayerController player;
 
 	public UnityEvent OnDropped;
+    public float dropDelay = 0.2f; // used by blocks
 
 	private InputAction spawnAction;
 

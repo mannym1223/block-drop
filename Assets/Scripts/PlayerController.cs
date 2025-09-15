@@ -83,7 +83,7 @@ public class PlayerController : MonoBehaviour
         while (stepDistance > 0f)
         {
             transform.Translate(direction * moveSpeed * Time.deltaTime);
-            stepDistance -= Time.deltaTime;
+            stepDistance -= Time.deltaTime * moveSpeed;
             yield return new WaitForFixedUpdate();
         }
 		isMoving = false;

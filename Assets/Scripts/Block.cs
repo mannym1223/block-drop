@@ -47,7 +47,7 @@ public class Block : MonoBehaviour
         while(CanDrop(Vector3.down, 1f))
         {
             transform.Translate(Vector3.down);
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(BlockDropManager.Instance.dropDelay);
         }
 		gameObject.layer = LayerMask.NameToLayer("InactiveBlock");
         BlockDropManager.Instance.OnDropped?.Invoke();
