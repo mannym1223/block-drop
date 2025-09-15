@@ -22,6 +22,7 @@ public class PlayerController : MonoBehaviour
     {
 		moveAction = InputSystem.actions.FindAction("Move");
         dropAction = InputSystem.actions.FindAction("Drop");
+        BlockDropManager.Instance.OnDropped.AddListener(() => isDropping = false);
 	}
 
 	private void FixedUpdate()
@@ -47,6 +48,7 @@ public class PlayerController : MonoBehaviour
         {
             activeBlock.transform.SetParent(null, true);
             activeBlock.Drop();
+            activeBlock = null;
             isDropping = true;
             Debug.Log("Call drop on block");
         }

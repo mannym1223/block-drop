@@ -1,32 +1,59 @@
 using UnityEngine;
+using UnityEngine.Events;
+using UnityEngine.InputSystem;
 
 public class BlockDropManager : MonoBehaviour
 {
+    private static BlockDropManager instance;
+
     public static BlockDropManager Instance 
     { 
         get 
-        { 
-            if (Instance == null) Instance = new();
-            return Instance;
+        {
+            return instance;
         }
-      private set => Instance = value; 
     }
 
     public GridManager gridManager;
     public Transform spawnPoint;
     public PlayerController player;
 
-    // Start is called once before the first execution of Update after the MonoBehaviour is created
-    void Start()
+	public UnityEvent OnDropped;
+
+	private InputAction spawnAction;
+
+	private void Awake()
+	{
+		instance = this;
+	}
+
+	// Start is called once before the first execution of Update after the MonoBehaviour is created
+	void Start()
     {
-        player.activeBlock = Instantiate(gridManager.BlockList[0], spawnPoint.position, spawnPoint.rotation, spawnPoint);
+        spawnAction = InputSystem.actions.FindAction("SpawnBlock");
+		SpawnBlock();
+        Debug.Log("Hello");
     }
 
     // Update is called once per frame
     void Update()
     {
-        
+        if(spawnAction.ReadValue<float>() > 0f)
+        {
+            SpawnBlock();
+            Debug.Log("Spawning");
+        }
     }
+
+    public void SpawnBlock()
+    {
+        if (player.activeBlock != null)
+        {
+            Debug.Log("Cannot spawn new block. Active block exists.");
+            return;
+        }
+		player.activeBlock = Instantiate(gridManager.BlockList[0], spawnPoint.position, spawnPoint.rotation, spawnPoint);
+	}
 
     /// <summary>
     /// 
