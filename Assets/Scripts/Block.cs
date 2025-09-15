@@ -42,6 +42,18 @@ public class Block : MonoBehaviour
 		return true;
 	}
 
+    protected void SeparateCubes()
+    {
+        foreach(BaseCube cube in cubes)
+        {
+			cube.transform.SetParent(null, true);
+            cube.GetComponent<BoxCollider>().enabled = true;
+			cube.gameObject.layer = LayerMask.NameToLayer("InactiveBlock");
+		}
+
+        Destroy(gameObject);
+    }
+
     IEnumerator StartDropping()
     {
         while(CanDrop(Vector3.down, 1f))
@@ -49,7 +61,7 @@ public class Block : MonoBehaviour
             transform.Translate(Vector3.down);
             yield return new WaitForSeconds(BlockDropManager.Instance.dropDelay);
         }
-		gameObject.layer = LayerMask.NameToLayer("InactiveBlock");
+        SeparateCubes();
         BlockDropManager.Instance.OnDropped?.Invoke();
 	}
 }
