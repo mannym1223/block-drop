@@ -1,4 +1,5 @@
 
+using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
 using UnityEngine;
@@ -11,17 +12,10 @@ public class Block : MonoBehaviour
 
     public List<BaseCube> cubes;
 
-    /*
-	private void Awake()
-	{
-		cubes = new List<BaseCube>();
-
-        BaseCube[] children = GetComponentsInChildren<BaseCube>();
-        foreach (BaseCube child in children)
-        {
-            cubes.Add(child);
-        }
-	}*/
+    public virtual void Drop()
+    {
+        StartCoroutine(StartDropping());
+    }
 
 	public virtual bool CanMove(Vector3 direction, float distance)
     {
@@ -33,5 +27,26 @@ public class Block : MonoBehaviour
             }
         }
         return true;
+    }
+
+    public virtual bool CanDrop (Vector3 direction, float distance)
+    {
+		foreach (BaseCube cube in cubes)
+		{
+			if (!cube.CanDrop(direction, distance))
+			{
+				return false;
+			}
+		}
+		return true;
+	}
+
+    IEnumerator StartDropping()
+    {
+        while(CanDrop(Vector3.down, 1f))
+        {
+            transform.Translate(Vector3.down);
+            yield return new WaitForSeconds(0.5f);
+        }
     }
 }

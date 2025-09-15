@@ -13,16 +13,22 @@ public class PlayerController : MonoBehaviour
     private Vector2 currentMoveValue;
     private bool isMoving = false;
 
+    InputAction dropAction;
+    private float currentDropValue;
+    private bool isDropping = false;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
 		moveAction = InputSystem.actions.FindAction("Move");
+        dropAction = InputSystem.actions.FindAction("Drop");
 	}
 
 	private void FixedUpdate()
 	{
 		currentMoveValue = moveAction.ReadValue<Vector2>();
-
+        currentDropValue = dropAction.ReadValue<float>();
+        Debug.Log(currentDropValue);
 		if (currentMoveValue != null && !isMoving && activeBlock != null)
 		{
             bool goForward = activeBlock.CanMove(Vector3.forward * currentMoveValue.x, moveStep);
@@ -36,6 +42,14 @@ public class PlayerController : MonoBehaviour
 
             //Debug.Log(goForward);
 		}
+
+        if (currentDropValue > 0f && !isMoving && activeBlock != null && !isDropping)
+        {
+            activeBlock.transform.SetParent(null, true);
+            activeBlock.Drop();
+            isDropping = true;
+            Debug.Log("Call drop on block");
+        }
 	}
 
 	IEnumerator StartMoving(bool goForward, bool goRight)
