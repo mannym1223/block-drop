@@ -29,7 +29,6 @@ public class PlayerController : MonoBehaviour
 	{
 		currentMoveValue = moveAction.ReadValue<Vector2>();
         currentDropValue = dropAction.ReadValue<float>();
-        Debug.Log(currentDropValue);
 		if (currentMoveValue != null && !isMoving && activeBlock != null)
 		{
             bool goForward = activeBlock.CanMove(Vector3.forward * currentMoveValue.x, moveStep);
@@ -39,9 +38,6 @@ public class PlayerController : MonoBehaviour
             {
                 StartCoroutine(StartMoving(goForward, goRight));
             }
-			//Debug.Log(currentMoveValue);
-
-            //Debug.Log(goForward);
 		}
 
         if (currentDropValue > 0f && !isMoving && activeBlock != null && !isDropping)
@@ -50,7 +46,6 @@ public class PlayerController : MonoBehaviour
             activeBlock.Drop();
             activeBlock = null;
             isDropping = true;
-            Debug.Log("Call drop on block");
         }
 	}
 

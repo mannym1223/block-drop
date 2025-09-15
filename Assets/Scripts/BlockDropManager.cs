@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -21,6 +22,8 @@ public class BlockDropManager : MonoBehaviour
 	public UnityEvent OnDropped;
     public float dropDelay = 0.2f; // used by blocks
 
+	protected List<BaseCube> allCubes = new();
+
 	private InputAction spawnAction;
 
 	private void Awake()
@@ -33,7 +36,6 @@ public class BlockDropManager : MonoBehaviour
     {
         spawnAction = InputSystem.actions.FindAction("SpawnBlock");
 		SpawnBlock();
-        Debug.Log("Hello");
     }
 
     // Update is called once per frame
@@ -42,7 +44,6 @@ public class BlockDropManager : MonoBehaviour
         if(spawnAction.ReadValue<float>() > 0f)
         {
             SpawnBlock();
-            Debug.Log("Spawning");
         }
     }
 
@@ -54,7 +55,16 @@ public class BlockDropManager : MonoBehaviour
             return;
         }
 		player.activeBlock = Instantiate(gridManager.BlockList[0], spawnPoint.position, spawnPoint.rotation, spawnPoint);
+        allCubes.AddRange(player.activeBlock.cubes);
 	}
+
+    public void ShiftAllBlockDown()
+    {
+        foreach (BaseCube cube in allCubes)
+        {
+            cube.ShiftDown();
+        }
+    }
 
     /// <summary>
     /// 

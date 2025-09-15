@@ -11,9 +11,14 @@ public class Block : MonoBehaviour
     public int length;
     public int height;
 
-    public List<BaseCube> cubes;
+    public List<BaseCube> cubes = new();
 
-    public virtual void Drop()
+	private void Awake()
+	{
+        cubes.AddRange(GetComponentsInChildren<BaseCube>());
+	}
+
+	public virtual void Drop()
     {
         StartCoroutine(StartDropping());
 	}
@@ -50,8 +55,6 @@ public class Block : MonoBehaviour
             cube.GetComponent<BoxCollider>().enabled = true;
 			cube.gameObject.layer = LayerMask.NameToLayer("InactiveBlock");
 		}
-
-        Destroy(gameObject);
     }
 
     IEnumerator StartDropping()
@@ -62,6 +65,8 @@ public class Block : MonoBehaviour
             yield return new WaitForSeconds(BlockDropManager.Instance.dropDelay);
         }
         SeparateCubes();
-        BlockDropManager.Instance.OnDropped?.Invoke();
+        //BlockDropManager.Instance.OnDropped?.Invoke();
+
+		Destroy(gameObject);
 	}
 }
