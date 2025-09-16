@@ -4,7 +4,8 @@ public class BaseCube : MonoBehaviour
 {
     public bool CanMove(Vector3 direction, float distance)
     {
-		return Physics.Raycast(transform.position, direction, distance, LayerMask.GetMask("Spawn"));
+		return Physics.Raycast(transform.position, direction, distance, LayerMask.GetMask("Spawn")) &&
+				!Physics.Raycast(transform.position, direction, distance, LayerMask.GetMask("InactiveBlock"));
 	}
 
 	public bool CanDrop(Vector3 direction, float distance)
@@ -15,5 +16,17 @@ public class BaseCube : MonoBehaviour
 	public void ShiftDown()
 	{
 		transform.Translate(Vector3.down);
+	}
+
+	public void LandCube()
+	{
+		if(transform.position.y > BlockDropManager.Instance.gameOverLimit.transform.position.y)
+		{
+			BlockDropManager.Instance.GameOver();
+		}
+
+		transform.SetParent(null, true);
+		GetComponent<BoxCollider>().enabled = true;
+		gameObject.layer = LayerMask.NameToLayer("InactiveBlock");
 	}
 }

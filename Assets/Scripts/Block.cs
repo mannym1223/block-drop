@@ -16,6 +16,11 @@ public class Block : MonoBehaviour
         cubes.AddRange(GetComponentsInChildren<BaseCube>());
 	}
 
+	private void Start()
+	{
+		
+	}
+
 	public virtual void Drop()
     {
         StartCoroutine(StartDropping());
@@ -45,13 +50,16 @@ public class Block : MonoBehaviour
 		return true;
 	}
 
+    protected void CheckIfGameOver()
+    {
+
+    }
+
     protected void SeparateCubes()
     {
         foreach(BaseCube cube in cubes)
         {
-			cube.transform.SetParent(null, true);
-            cube.GetComponent<BoxCollider>().enabled = true;
-			cube.gameObject.layer = LayerMask.NameToLayer("InactiveBlock");
+            cube.LandCube();
 		}
     }
 

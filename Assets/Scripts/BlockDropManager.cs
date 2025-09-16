@@ -18,6 +18,7 @@ public class BlockDropManager : MonoBehaviour
     public GridManager gridManager;
     public Transform spawnPoint;
     public PlayerController player;
+    public Transform gameOverLimit;
 
 	public UnityEvent OnDropped;
     public float dropDelay = 0.2f; // used by blocks
@@ -56,8 +57,17 @@ public class BlockDropManager : MonoBehaviour
         }
         int randomIndex = (int)(Random.value * (gridManager.BlockList.Count));
         player.activeBlock = Instantiate(gridManager.BlockList[randomIndex], spawnPoint.position, spawnPoint.rotation, spawnPoint);
+        //CheckIfGameOver();
         allCubes.AddRange(player.activeBlock.cubes);
 	}
+
+    public void CheckIfGameOver()
+    {
+        foreach (BaseCube cube in player.activeBlock.cubes)
+        {
+            
+        }
+    }
 
     public void ShiftAllBlockDown()
     {
@@ -70,7 +80,7 @@ public class BlockDropManager : MonoBehaviour
     /// <summary>
     /// 
     /// </summary>
-    public static void GameOver()
+    public void GameOver()
     {
         Debug.Log("Game Over");
     }
