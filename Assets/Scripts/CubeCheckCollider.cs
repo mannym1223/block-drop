@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class GridCheckCollider : MonoBehaviour
+public class CubeCheckCollider : MonoBehaviour
 {
 	public bool hasBlock;
 	public BaseCube cube;
