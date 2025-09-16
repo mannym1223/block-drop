@@ -54,7 +54,8 @@ public class BlockDropManager : MonoBehaviour
             Debug.Log("Cannot spawn new block. Active block exists.");
             return;
         }
-		player.activeBlock = Instantiate(gridManager.BlockList[0], spawnPoint.position, spawnPoint.rotation, spawnPoint);
+        int randomIndex = (int)(Random.value * (gridManager.BlockList.Count));
+        player.activeBlock = Instantiate(gridManager.BlockList[randomIndex], spawnPoint.position, spawnPoint.rotation, spawnPoint);
         allCubes.AddRange(player.activeBlock.cubes);
 	}
 

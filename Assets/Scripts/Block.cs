@@ -1,9 +1,6 @@
-
 using System.Collections;
 using System.Collections.Generic;
-using System.Linq;
 using UnityEngine;
-using UnityEngine.Events;
 
 public class Block : MonoBehaviour
 {
@@ -11,6 +8,7 @@ public class Block : MonoBehaviour
     public int length;
     public int height;
 
+    [HideInInspector]
     public List<BaseCube> cubes = new();
 
 	private void Awake()

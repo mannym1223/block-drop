@@ -14,3 +14,5 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::GridManager
   blockList:
   - {fileID: 3127003044587743591, guid: 24e5a54f52280474cb5a105ea8d97607, type: 3}
+  - {fileID: 5561876468691609074, guid: cec99b56c25ca804089a5ab0140252ff, type: 3}
+  - {fileID: 6966063683459078030, guid: b93a5f7df8aec33478e2b191c2da9271, type: 3}
