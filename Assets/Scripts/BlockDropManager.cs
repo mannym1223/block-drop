@@ -15,7 +15,7 @@ public class BlockDropManager : MonoBehaviour
         }
     }
 
-    public GridManager gridManager;
+    public BlockTypeList blockTypes;
     public Transform spawnPoint;
     public PlayerController player;
     public Transform gameOverLimit;
@@ -55,27 +55,11 @@ public class BlockDropManager : MonoBehaviour
             Debug.Log("Cannot spawn new block. Active block exists.");
             return;
         }
-        int randomIndex = (int)(Random.value * (gridManager.BlockList.Count));
-        player.activeBlock = Instantiate(gridManager.BlockList[randomIndex], spawnPoint.position, spawnPoint.rotation, spawnPoint);
+        int randomIndex = (int)(Random.value * (blockTypes.BlockList.Count));
+        player.activeBlock = Instantiate(blockTypes.BlockList[randomIndex], spawnPoint.position, spawnPoint.rotation, spawnPoint);
         //CheckIfGameOver();
         allCubes.AddRange(player.activeBlock.cubes);
 	}
-
-    public void CheckIfGameOver()
-    {
-        foreach (BaseCube cube in player.activeBlock.cubes)
-        {
-            
-        }
-    }
-
-    public void ShiftAllBlockDown()
-    {
-        foreach (BaseCube cube in allCubes)
-        {
-            cube.ShiftDown();
-        }
-    }
 
     /// <summary>
     /// 

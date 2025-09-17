@@ -1,8 +1,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[CreateAssetMenu(fileName = "GridManager", menuName = "BlockDrop/GridManager")]
-public class GridManager : ScriptableObject
+[CreateAssetMenu(fileName = "GridManager", menuName = "BlockDrop/BlockList")]
+public class BlockTypeList : ScriptableObject
 {
     [SerializeField]
     private List<Block> blockList;

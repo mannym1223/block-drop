@@ -1,4 +1,5 @@
 using System.Collections;
+using Unity.VisualScripting;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -29,15 +30,27 @@ public class PlayerController : MonoBehaviour
 	{
 		currentMoveValue = moveAction.ReadValue<Vector2>();
         currentDropValue = dropAction.ReadValue<float>();
-		if (currentMoveValue != null && !isMoving && activeBlock != null)
+		if (currentMoveValue != null && !isMoving)
 		{
-            bool goForward = activeBlock.CanMove(Vector3.forward * currentMoveValue.x, moveStep);
-            bool goRight = activeBlock.CanMove(Vector3.right * currentMoveValue.y, moveStep);
-
+			bool goForward;
+            bool goRight;
+			// move freely while no active block
+			if (activeBlock == null)
+            {
+                goForward = Physics.Raycast(transform.position, Vector3.forward * currentMoveValue.x, moveStep, LayerMask.GetMask("Spawn"));
+                goRight = Physics.Raycast(transform.position, Vector3.right * currentMoveValue.y, moveStep, LayerMask.GetMask("Spawn"));
+                Debug.Log("Moving freely");
+			}
+            else
+            {
+                goForward = activeBlock.CanMove(Vector3.forward * currentMoveValue.x, moveStep);
+                goRight = activeBlock.CanMove(Vector3.right * currentMoveValue.y, moveStep);
+            }
             if (goForward || goRight) 
             {
                 StartCoroutine(StartMoving(goForward, goRight));
             }
+
 		}
 
         if (currentDropValue > 0f && !isMoving && activeBlock != null && !isDropping)

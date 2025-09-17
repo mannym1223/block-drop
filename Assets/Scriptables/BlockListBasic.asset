@@ -9,10 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d937fd23e5913d544918ef7d3f5968ac, type: 3}
-  m_Name: GridManagerBasic
-  m_EditorClassIdentifier: Assembly-CSharp::GridManager
+  m_Script: {fileID: 11500000, guid: 36dcb232eaf23c24da1ed698dda1c967, type: 3}
+  m_Name: BlockListBasic
+  m_EditorClassIdentifier: Assembly-CSharp::BlockTypeList
   blockList:
+  - {fileID: 6966063683459078030, guid: b93a5f7df8aec33478e2b191c2da9271, type: 3}
   - {fileID: 3127003044587743591, guid: 24e5a54f52280474cb5a105ea8d97607, type: 3}
   - {fileID: 5561876468691609074, guid: cec99b56c25ca804089a5ab0140252ff, type: 3}
-  - {fileID: 6966063683459078030, guid: b93a5f7df8aec33478e2b191c2da9271, type: 3}
