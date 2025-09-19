@@ -50,6 +50,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 47efe01ef8915a24488d31865295f831, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::GridClearManager
+  rowClearDelay: 1
+  rowClearInterval: 0.2
   rows:
   - {fileID: 95657404081852684}
   - {fileID: 616728653060840750}

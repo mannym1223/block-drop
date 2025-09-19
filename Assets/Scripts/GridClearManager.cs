@@ -1,9 +1,12 @@
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
 public class GridClearManager : MonoBehaviour
 {
-    
+
+	public float rowClearDelay; // used for flashing effect
+	public float rowClearInterval;
 	public List<GameObject> rows; //parent object of each row of cubes
 
 	protected CubeCheckCollider[][] cubeChecks;
@@ -45,20 +48,19 @@ public class GridClearManager : MonoBehaviour
 	{
 
 		//List<int> clearedRows = new();
+		int numCleared = 0;
 		for (int rowIndex = 0; rowIndex < rows.Count; rowIndex++)
 		{
 			if (CheckIfRowFull(rowIndex))
 			{
-				// TODO: shift cubes above cleared row down
-				//clearedRows.Add(rowIndex);
+				numCleared++;
 			}
 		}
-		/*
-		int numCleared = clearedRows.Count;
-		foreach (int rowIndex in clearedRows)
+
+		if (numCleared > 0)
 		{
-			ShiftRowDown(rowIndex);
-		}*/
+			BlockDropManager.Instance.IncreaseScore(CalculateScore(numCleared));
+		}
 	}
 
 	protected bool CheckIfRowFull(int row)
@@ -69,7 +71,6 @@ public class GridClearManager : MonoBehaviour
 			if (!cubeChecker.hasBlock)
 			{
 				// row isn't full so do nothing
-				Debug.Log("NOT clear" + cubeChecker.name + " has ");
 				if (cubeChecker.cube != null)
 				{
 					Debug.Log(cubeChecker.cube.name);
@@ -77,17 +78,39 @@ public class GridClearManager : MonoBehaviour
 				return false;
 			}
 		}
-		Debug.Log("Clear------------");
 
 		// row is full so clear it
+		StartCoroutine(FlashBlocksInRowThenDestroy(row));
+
+		return true;
+	}
+
+	protected int CalculateScore(int numRows)
+	{
+		return 1000 + (numRows * numRows * 1000);
+	}
+
+	protected IEnumerator FlashBlocksInRowThenDestroy(int row)
+	{
+		float timeElapsed = 0f;
+		while(timeElapsed < rowClearDelay)
+		{
+			for (int cubeIndex = 0; cubeIndex < cubeChecks[row].Length; cubeIndex++)
+			{
+				// alternate between visible and invisible
+				MeshRenderer render = cubeChecks[row][cubeIndex].cube.GetComponent<MeshRenderer>();
+				render.enabled = !render.enabled;
+			}
+			
+			yield return new WaitForSeconds(rowClearInterval);
+			timeElapsed += rowClearInterval;
+		}
+
 		for (int cubeIndex = 0; cubeIndex < cubeChecks[row].Length; cubeIndex++)
 		{
 			var cubeChecker = cubeChecks[row][cubeIndex];
 			Destroy(cubeChecker.cube.gameObject); // TODO: Add flashing effect when destroying
+			cubeChecker.ResetCollider();
 		}
-
-		return true;
-
-		//BlockDropManager.Instance.ShiftAllBlockDown();
 	}
 }

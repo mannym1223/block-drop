@@ -21,8 +21,10 @@ public class BlockDropManager : MonoBehaviour
     public Transform gameOverLimit;
 
 	public UnityEvent OnDropped;
+    public UnityEvent OnScoreChanged;
     public float dropDelay = 0.2f; // used by blocks
 
+    protected int score;
 	protected List<BaseCube> allCubes = new();
 
 	private InputAction spawnAction;
@@ -61,11 +63,18 @@ public class BlockDropManager : MonoBehaviour
         allCubes.AddRange(player.activeBlock.cubes);
 	}
 
+    public void IncreaseScore(int scoreGained)
+    {
+        score += scoreGained;
+        OnScoreChanged?.Invoke();
+    }
+
     /// <summary>
     /// 
     /// </summary>
     public void GameOver()
     {
         Debug.Log("Game Over");
+        Debug.Log("Score: " + score);
     }
 }
