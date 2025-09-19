@@ -1,18 +1,3 @@
-%YAML 1.1
-%TAG !u! tag:unity3d.com,2011:
---- !u!114 &11400000
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 36dcb232eaf23c24da1ed698dda1c967, type: 3}
-  m_Name: BlockListBasic
-  m_EditorClassIdentifier: Assembly-CSharp::BlockTypeList
-  blockList:
-  - {fileID: 6966063683459078030, guid: b93a5f7df8aec33478e2b191c2da9271, type: 3}
-  - {fileID: 3127003044587743591, guid: 24e5a54f52280474cb5a105ea8d97607, type: 3}
-  - {fileID: 5561876468691609074, guid: cec99b56c25ca804089a5ab0140252ff, type: 3}
+version https://git-lfs.github.com/spec/v1
+oid sha256:2c2f88798645c04899b05e50a90c3ec7f299ee8628895d9cf7c9b4ed25f6bfb0
+size 695

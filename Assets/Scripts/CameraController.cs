@@ -16,6 +16,8 @@ public class CameraController : MonoBehaviour
 	float[] rotations = new float[4];
 	int currentRotation = 0;
 
+	MeshRenderer glass;
+
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
