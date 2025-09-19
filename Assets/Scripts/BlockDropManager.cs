@@ -21,7 +21,7 @@ public class BlockDropManager : MonoBehaviour
     public Transform gameOverLimit;
 
 	public UnityEvent OnDropped;
-    public UnityEvent OnScoreChanged;
+    public UnityEvent<int> OnScoreChanged;
     public float dropDelay = 0.2f; // used by blocks
 
     protected int score;
@@ -66,7 +66,7 @@ public class BlockDropManager : MonoBehaviour
     public void IncreaseScore(int scoreGained)
     {
         score += scoreGained;
-        OnScoreChanged?.Invoke();
+        OnScoreChanged?.Invoke(score);
     }
 
     /// <summary>
