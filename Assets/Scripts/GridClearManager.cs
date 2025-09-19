@@ -33,12 +33,12 @@ public class GridClearManager : MonoBehaviour
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
     {
-        BlockDropManager.Instance.OnDropped.AddListener(CheckIfFull);
+        BlockDropManager.Instance.OnDropped?.AddListener(CheckIfFull);
     }
 
 	private void OnDisable()
 	{
-		BlockDropManager.Instance.OnDropped.RemoveListener(CheckIfFull);
+		BlockDropManager.Instance.OnDropped?.RemoveListener(CheckIfFull);
 	}
 
 	/// <summary>

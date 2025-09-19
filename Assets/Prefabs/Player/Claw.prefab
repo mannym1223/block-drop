@@ -170,7 +170,8 @@ MonoBehaviour:
   rope: {fileID: 1360017325987858984}
   activeBlock: {fileID: 0}
   moveStep: 1
-  moveSpeed: 2
+  moveSpeed: 10
+  mainCam: {fileID: 0}
 --- !u!1 &3698880093681139986
 GameObject:
   m_ObjectHideFlags: 0
