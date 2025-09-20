@@ -8,6 +8,7 @@ public class FlashingText : MonoBehaviour
 	public float flashDelay;
 
 	private bool isFlashing;
+	private float flashTime = 0;
 
 	private void Awake()
 	{
@@ -22,28 +23,23 @@ public class FlashingText : MonoBehaviour
 		}
 	}
 
-	private void OnDisable()
+	private void Update()
 	{
-		StopAllCoroutines();
+		if (isFlashing && flashTime > flashDelay)
+		{
+			textRender.enabled = !textRender.enabled;
+			flashTime = 0f;
+		}
+		flashTime += Time.deltaTime;
 	}
 
 	public void ActivateFlashing()
 	{
-        if (isFlashing)
-        {
-			return;
-        }
-        StartCoroutine(StartFlashing());
+        isFlashing = true;
 	}
 
-	private IEnumerator StartFlashing()
+	public void DeactivateFlashing()
 	{
-		isFlashing = true;
-
-		while (true)
-		{
-			textRender.enabled = !textRender.enabled;
-			yield return new WaitForSeconds(flashDelay);
-		}
+		isFlashing = false;
 	}
 }
