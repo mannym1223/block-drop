@@ -1,8 +1,10 @@
 using System.Collections.Generic;
 using TMPro;
+using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.SceneManagement;
 
 public class BlockDropManager : MonoBehaviour
 {
@@ -29,8 +31,10 @@ public class BlockDropManager : MonoBehaviour
 
     protected int score;
 	protected List<BaseCube> allCubes = new();
+    protected bool isGameOver;
 
 	private InputAction spawnAction;
+    private InputAction restartAction;
 
 	private void Awake()
 	{
@@ -41,6 +45,7 @@ public class BlockDropManager : MonoBehaviour
 	void Start()
     {
         spawnAction = InputSystem.actions.FindAction("SpawnBlock");
+        restartAction = InputSystem.actions.FindAction("Restart");
 		SpawnBlock();
     }
 
@@ -50,6 +55,10 @@ public class BlockDropManager : MonoBehaviour
         if(spawnAction.ReadValue<float>() > 0f)
         {
             SpawnBlock();
+        }
+        if (isGameOver && restartAction?.ReadValue<float>() > 0f)
+        {
+            SceneManager.LoadScene(0); // restart the scene
         }
     }
 
@@ -79,5 +88,6 @@ public class BlockDropManager : MonoBehaviour
 
         gameOverText.SetActive(true);
         gameOverScoreText.GetComponent<TextMeshPro>().text = score.ToString();
+        isGameOver = true;
     }
 }
