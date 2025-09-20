@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -19,6 +20,8 @@ public class BlockDropManager : MonoBehaviour
     public Transform spawnPoint;
     public PlayerController player;
     public Transform gameOverLimit;
+    public GameObject gameOverText;
+    public GameObject gameOverScoreText;
 
 	public UnityEvent OnDropped;
     public UnityEvent<int> OnScoreChanged;
@@ -69,12 +72,12 @@ public class BlockDropManager : MonoBehaviour
         OnScoreChanged?.Invoke(score);
     }
 
-    /// <summary>
-    /// 
-    /// </summary>
     public void GameOver()
     {
         Debug.Log("Game Over");
         Debug.Log("Score: " + score);
+
+        gameOverText.SetActive(true);
+        gameOverScoreText.GetComponent<TextMeshPro>().text = score.ToString();
     }
 }
