@@ -51,7 +51,7 @@ public class BlockDropManager : MonoBehaviour
 
 	private void OnDisable()
 	{
-		OnDropped?.RemoveListener(SpawnBlock);
+        OnDropped?.RemoveAllListeners();
 	}
 
 	// Update is called once per frame
