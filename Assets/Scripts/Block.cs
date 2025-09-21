@@ -5,6 +5,7 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     public List<float> rotations = new List<float>(); // used when spawning
+    public GameObject outlineBox;
 
     public int width;
     public int length;
@@ -34,6 +35,7 @@ public class Block : MonoBehaviour
 
 	public virtual void Drop()
     {
+        Destroy(outlineBox);
         StartCoroutine(StartDropping());
 	}
 
