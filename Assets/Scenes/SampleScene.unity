@@ -8311,6 +8311,11 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!4 &1968120747 stripped
+Transform:
+  m_CorrespondingSourceObject: {fileID: 201081815313992219, guid: 82d5d34ca3e2ab84d9480ba9dcf03d29, type: 3}
+  m_PrefabInstance: {fileID: 1006383619}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &1975085864
 GameObject:
   m_ObjectHideFlags: 0
@@ -9451,16 +9456,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 1134330573719421266, guid: 4e09b00ce447aca45973209993d75b3c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 3311948355394940157, guid: 4e09b00ce447aca45973209993d75b3c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
-    - targetCorrespondingSourceObject: {fileID: 1402559741028515326, guid: 4e09b00ce447aca45973209993d75b3c, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 0}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 4e09b00ce447aca45973209993d75b3c, type: 3}
 --- !u!1001 &6476563139845489795
 PrefabInstance:
@@ -9482,6 +9478,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: PlayerClaw
       objectReference: {fileID: 0}
+    - target: {fileID: 3450739773944848887, guid: 8c6f41d1407f7f04c8aa439a06424fda, type: 3}
+      propertyPath: joystick
+      value: 
+      objectReference: {fileID: 1968120747}
     - target: {fileID: 9072577377760346924, guid: 8c6f41d1407f7f04c8aa439a06424fda, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0

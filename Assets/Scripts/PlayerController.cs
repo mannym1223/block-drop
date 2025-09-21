@@ -12,6 +12,7 @@ public class PlayerController : MonoBehaviour
     public float moveSpeed = 1.0f;
     [HideInInspector]
     public Camera mainCam;
+    public Transform joystick;
 
     InputAction moveAction;
     private Vector2 currentMoveValue;
@@ -39,14 +40,13 @@ public class PlayerController : MonoBehaviour
 			bool goForward;
             bool goRight;
 
-			// move freely while no active block
-            // TODO: FIX MOVEMENT BASED ON CAMERA ORIENTATION
 			Vector3 mainCamForward = mainCam.transform.forward * currentMoveValue.y;
             mainCamForward.y = 0f;
             mainCamForward.Normalize();
 			Vector3 mainCamRight = mainCam.transform.right * currentMoveValue.x;
-			if (activeBlock == null)
-            {
+
+			if (activeBlock == null) // move freely while no active block
+			{
 				goForward = Physics.Raycast(transform.position, mainCamForward, moveStep, LayerMask.GetMask("Spawn"));
                 goRight = Physics.Raycast(transform.position, mainCamRight, moveStep, LayerMask.GetMask("Spawn"));
 			}
@@ -66,7 +66,9 @@ public class PlayerController : MonoBehaviour
                 {
                     direction += mainCamRight;
                 }
-                StartCoroutine(StartMoving(direction.normalized));
+                direction.Normalize();
+				joystick.localRotation = Quaternion.Euler(currentMoveValue.y * -35, 0f, currentMoveValue.x * -35);
+				StartCoroutine(StartMoving(direction));
             }
 		}
 
@@ -104,7 +106,17 @@ public class PlayerController : MonoBehaviour
             //stepDistance -= Time.deltaTime * moveSpeed;
             yield return new WaitForFixedUpdate();
         }
-
+		joystick.localRotation = Quaternion.Euler(0f, 0f, 0f);
 		isMoving = false;
     }
+
+    IEnumerator StartMovingJoystick()
+    {
+        Quaternion newRotation = Quaternion.Euler(currentMoveValue.y * 35, 0f, 0f);
+        while (Quaternion.Angle(joystick.rotation, newRotation) > 0.05f)
+        {
+            joystick.Rotate(Vector3.forward * 35 * currentMoveValue.y, 0f, 0f);
+            yield return new WaitForFixedUpdate();
+        }
+	}
 }
