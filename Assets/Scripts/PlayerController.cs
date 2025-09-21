@@ -9,7 +9,8 @@ public class PlayerController : MonoBehaviour
     [HideInInspector]
     public Block activeBlock;
     public float moveStep = 1f;
-    public float moveSpeed = 1.0f;
+    public float moveSpeed = 5.0f;
+    public float resetSpeed = 5.0f;
     [HideInInspector]
     public Camera mainCam;
     public Transform joystick;
@@ -17,6 +18,7 @@ public class PlayerController : MonoBehaviour
     InputAction moveAction;
     private Vector2 currentMoveValue;
     private bool isMoving = false;
+    private Vector3 startPosition;
 
     InputAction dropAction;
     private float currentDropValue;
@@ -28,13 +30,25 @@ public class PlayerController : MonoBehaviour
         mainCam = FindFirstObjectByType<Camera>();
 		moveAction = InputSystem.actions.FindAction("Move");
         dropAction = InputSystem.actions.FindAction("Drop");
+        startPosition = transform.position;
         BlockDropManager.Instance.OnDropped.AddListener(() => isDropping = false);
+	}
+
+	private void OnDisable()
+	{
+		StopAllCoroutines();
 	}
 
 	private void FixedUpdate()
 	{
 		currentMoveValue = moveAction.ReadValue<Vector2>();
         currentDropValue = dropAction.ReadValue<float>();
+
+        if(isDropping)
+        {
+            return;
+        }
+
 		if (currentMoveValue != null && !isMoving && currentMoveValue.magnitude != 0f)
 		{
 			bool goForward;
@@ -78,9 +92,15 @@ public class PlayerController : MonoBehaviour
             activeBlock.Drop();
             activeBlock = null;
             isDropping = true;
+            StartCoroutine(StartMovingToStart());
         }
 	}
 
+    /// <summary>
+    /// Move player to next point in grid
+    /// </summary>
+    /// <param name="direction"></param>
+    /// <returns></returns>
 	IEnumerator StartMoving(Vector3 direction)
     {
         isMoving = true;
@@ -109,6 +129,21 @@ public class PlayerController : MonoBehaviour
 		joystick.localRotation = Quaternion.Euler(0f, 0f, 0f);
 		isMoving = false;
     }
+
+    /// <summary>
+    /// Move player back to where it spawned
+    /// </summary>
+    /// <returns></returns>
+    IEnumerator StartMovingToStart()
+    {
+        isMoving = true;
+        while (Vector3.Distance(startPosition, transform.position) > 0.05f)
+        {
+			transform.position = Vector3.Lerp(transform.position, startPosition, resetSpeed * Time.deltaTime);
+			yield return new WaitForFixedUpdate();
+		}
+        isMoving = false;
+	}
 
     IEnumerator StartMovingJoystick()
     {

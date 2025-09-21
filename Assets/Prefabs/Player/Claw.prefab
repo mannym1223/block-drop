@@ -171,7 +171,9 @@ MonoBehaviour:
   activeBlock: {fileID: 0}
   moveStep: 1
   moveSpeed: 10
+  resetSpeed: 5
   mainCam: {fileID: 0}
+  joystick: {fileID: 0}
 --- !u!1 &3698880093681139986
 GameObject:
   m_ObjectHideFlags: 0

@@ -18,7 +18,12 @@ public class Block : MonoBehaviour
         cubes.AddRange(GetComponentsInChildren<BaseCube>());
 	}
 
-    public void Spawned()
+	private void OnDisable()
+	{
+		StopAllCoroutines();
+	}
+
+	public void Spawned()
     {
 		if (rotations.Count > 1)
 		{

@@ -45,11 +45,17 @@ public class BlockDropManager : MonoBehaviour
     {
         spawnAction = InputSystem.actions.FindAction("SpawnBlock");
         restartAction = InputSystem.actions.FindAction("Restart");
+        OnDropped?.AddListener(SpawnBlock);
 		SpawnBlock();
     }
 
-    // Update is called once per frame
-    void Update()
+	private void OnDisable()
+	{
+		OnDropped?.RemoveListener(SpawnBlock);
+	}
+
+	// Update is called once per frame
+	void Update()
     {
         if(spawnAction.ReadValue<float>() > 0f)
         {
