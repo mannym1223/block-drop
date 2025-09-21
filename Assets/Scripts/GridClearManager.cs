@@ -81,7 +81,7 @@ public class GridClearManager : MonoBehaviour
 
 		// row is full so clear it
 		StartCoroutine(FlashBlocksInRowThenDestroy(row));
-
+		BlockDropManager.Instance.OnRowCleared?.Invoke();
 		return true;
 	}
 

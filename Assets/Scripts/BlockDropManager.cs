@@ -26,6 +26,7 @@ public class BlockDropManager : MonoBehaviour
 
 	public UnityEvent OnDropped;
     public UnityEvent OnPlayerMoved;
+    public UnityEvent OnRowCleared;
     public UnityEvent<int> OnScoreChanged;
     public float dropDelay = 0.2f; // used by blocks
 
@@ -33,7 +34,6 @@ public class BlockDropManager : MonoBehaviour
 	protected List<BaseCube> allCubes = new();
     protected bool isGameOver;
 
-	private InputAction spawnAction;
     private InputAction restartAction;
 
 	private void Awake()
@@ -44,7 +44,6 @@ public class BlockDropManager : MonoBehaviour
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
     {
-        spawnAction = InputSystem.actions.FindAction("SpawnBlock");
         restartAction = InputSystem.actions.FindAction("Restart");
         OnDropped?.AddListener(SpawnBlock);
 		SpawnBlock();
@@ -58,10 +57,6 @@ public class BlockDropManager : MonoBehaviour
 	// Update is called once per frame
 	void Update()
     {
-        if(spawnAction.ReadValue<float>() > 0f)
-        {
-            SpawnBlock();
-        }
         if (isGameOver && restartAction?.ReadValue<float>() > 0f)
         {
             SceneManager.LoadScene(0); // restart the scene

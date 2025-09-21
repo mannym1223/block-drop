@@ -47,6 +47,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
   playerMoveClip: {fileID: 8300000, guid: b6bd093149929ca4d8146de126c62b72, type: 3}
   playerMoveVolume: 0.8
+  rowClearClip: {fileID: 8300000, guid: cb8d1f9f8bcfd7744bc5c09e074bdeb6, type: 3}
+  rowClearVolume: 1
   droppedClip: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
   droppedVolume: 0.5
 --- !u!82 &296728798090671951

@@ -6,6 +6,9 @@ public class AudioManager : MonoBehaviour
 	public AudioClip playerMoveClip;
 	public float playerMoveVolume;
 
+	public AudioClip rowClearClip;
+	public float rowClearVolume;
+
 	public AudioClip droppedClip;
 	public float droppedVolume = 0.5f;
 
@@ -21,12 +24,17 @@ public class AudioManager : MonoBehaviour
     {
 		//BlockDropManager.Instance.OnDropped?.AddListener(PlayDropped);
 		BlockDropManager.Instance.OnPlayerMoved?.AddListener(PlayPlayerMoved);
-
+		BlockDropManager.Instance.OnRowCleared?.AddListener(PlayRowCleared);
 	}
 
 	protected void PlayPlayerMoved()
 	{
 		audioSource.PlayOneShot(playerMoveClip, playerMoveVolume);
+	}
+
+	protected void PlayRowCleared()
+	{
+		audioSource.PlayOneShot(rowClearClip, rowClearVolume);
 	}
 
 	protected void PlayDropped()
