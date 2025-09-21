@@ -26,7 +26,9 @@ public class BlockDropManager : MonoBehaviour
 
 	public UnityEvent OnDropped;
     public UnityEvent OnPlayerMoved;
-    public UnityEvent OnRowCleared;
+    public UnityEvent OnSingleRowCleared;
+    public UnityEvent OnMultiRowCleared;
+    public UnityEvent OnGameOver;
     public UnityEvent<int> OnScoreChanged;
     public float dropDelay = 0.2f; // used by blocks
 
@@ -86,11 +88,10 @@ public class BlockDropManager : MonoBehaviour
 
     public void GameOver()
     {
-        Debug.Log("Game Over");
-        Debug.Log("Score: " + score);
-
         gameOverText.SetActive(true);
         gameOverScoreText.GetComponent<TextMeshPro>().text = score.ToString();
         isGameOver = true;
+
+        OnGameOver?.Invoke();
     }
 }

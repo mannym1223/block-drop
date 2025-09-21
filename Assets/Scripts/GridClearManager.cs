@@ -59,6 +59,14 @@ public class GridClearManager : MonoBehaviour
 
 		if (numCleared > 0)
 		{
+			if (numCleared > 1)
+			{
+				BlockDropManager.Instance.OnMultiRowCleared?.Invoke();
+			}
+			else
+			{
+				BlockDropManager.Instance.OnSingleRowCleared?.Invoke();
+			}
 			BlockDropManager.Instance.IncreaseScore(CalculateScore(numCleared));
 		}
 	}
@@ -81,7 +89,6 @@ public class GridClearManager : MonoBehaviour
 
 		// row is full so clear it
 		StartCoroutine(FlashBlocksInRowThenDestroy(row));
-		BlockDropManager.Instance.OnRowCleared?.Invoke();
 		return true;
 	}
 

@@ -3,11 +3,20 @@ using UnityEngine;
 [RequireComponent (typeof(AudioSource))]
 public class AudioManager : MonoBehaviour
 {
+	public AudioSource musicSource;
+
 	public AudioClip playerMoveClip;
-	public float playerMoveVolume;
+	public float playerMoveVolume = 0.5f;
 
 	public AudioClip rowClearClip;
-	public float rowClearVolume;
+	public float rowClearVolume = 0.5f;
+
+	public AudioClip MultiRowClearClip;
+	public float MultiRowClearVolume = 0.5f;
+
+	public AudioClip gameOverClip;
+	public float gameOverVolume = 0.5f;
+	public AudioClip gameOverMusic;
 
 	public AudioClip droppedClip;
 	public float droppedVolume = 0.5f;
@@ -24,7 +33,9 @@ public class AudioManager : MonoBehaviour
     {
 		//BlockDropManager.Instance.OnDropped?.AddListener(PlayDropped);
 		BlockDropManager.Instance.OnPlayerMoved?.AddListener(PlayPlayerMoved);
-		BlockDropManager.Instance.OnRowCleared?.AddListener(PlayRowCleared);
+		BlockDropManager.Instance.OnSingleRowCleared?.AddListener(PlayRowCleared);
+		BlockDropManager.Instance.OnMultiRowCleared?.AddListener(PlayMultiRowCleared);
+		BlockDropManager.Instance.OnGameOver?.AddListener(PlayGameOver);
 	}
 
 	protected void PlayPlayerMoved()
@@ -35,6 +46,19 @@ public class AudioManager : MonoBehaviour
 	protected void PlayRowCleared()
 	{
 		audioSource.PlayOneShot(rowClearClip, rowClearVolume);
+	}
+
+	protected void PlayMultiRowCleared()
+	{
+		audioSource.PlayOneShot(MultiRowClearClip, MultiRowClearVolume);
+	}
+
+	protected void PlayGameOver()
+	{
+		audioSource.PlayOneShot(gameOverClip, gameOverVolume);
+
+		musicSource.Stop();
+		//musicSource.clip = gameOverMusic;
 	}
 
 	protected void PlayDropped()
