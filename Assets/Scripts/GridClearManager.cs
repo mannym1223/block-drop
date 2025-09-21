@@ -109,7 +109,10 @@ public class GridClearManager : MonoBehaviour
 		for (int cubeIndex = 0; cubeIndex < cubeChecks[row].Length; cubeIndex++)
 		{
 			var cubeChecker = cubeChecks[row][cubeIndex];
-			Destroy(cubeChecker.cube.gameObject); // TODO: Add flashing effect when destroying
+			if (cubeChecker.cube != null)
+			{
+				Destroy(cubeChecker.cube.gameObject); // TODO: Add flashing effect when destroying
+			}
 			cubeChecker.ResetCollider();
 		}
 	}

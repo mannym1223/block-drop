@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class Block : MonoBehaviour
 {
+    public List<float> rotations = new List<float>(); // used when spawning
+
     public int width;
     public int length;
     public int height;
@@ -16,9 +18,13 @@ public class Block : MonoBehaviour
         cubes.AddRange(GetComponentsInChildren<BaseCube>());
 	}
 
-	private void Start()
-	{
-		
+    public void Spawned()
+    {
+		if (rotations.Count > 1)
+		{
+			int randomIndex = (int)(Random.value * (rotations.Count));
+			transform.rotation = Quaternion.Euler(0f, rotations[randomIndex], 0f);
+		}
 	}
 
 	public virtual void Drop()

@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using TMPro;
-using UnityEditor.SearchService;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
@@ -69,9 +68,11 @@ public class BlockDropManager : MonoBehaviour
             Debug.Log("Cannot spawn new block. Active block exists.");
             return;
         }
+
         int randomIndex = (int)(Random.value * (blockTypes.BlockList.Count));
-        player.activeBlock = Instantiate(blockTypes.BlockList[randomIndex], spawnPoint.position, spawnPoint.rotation, spawnPoint);
-        //CheckIfGameOver();
+        var newBlock = blockTypes.BlockList[randomIndex];
+		player.activeBlock = Instantiate(newBlock, spawnPoint.position, spawnPoint.rotation, spawnPoint);
+        player.activeBlock.Spawned();
         allCubes.AddRange(player.activeBlock.cubes);
 	}
 
