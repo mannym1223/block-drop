@@ -5,6 +5,7 @@ using UnityEngine;
 public class Block : MonoBehaviour
 {
     public List<float> rotations = new List<float>(); // used when spawning
+    public BlockTypeList blockTypes; // used for block colors
     public GameObject outlineBox;
 
     public int width;
@@ -17,6 +18,15 @@ public class Block : MonoBehaviour
 	private void Awake()
 	{
         cubes.AddRange(GetComponentsInChildren<BaseCube>());
+		if (blockTypes.materials.Count > 0)
+		{
+            Material newMaterial = blockTypes.materials[(int)(Random.value * (blockTypes.materials.Count))];
+
+			foreach (BaseCube cube in cubes)
+            {
+                cube.GetComponent<MeshRenderer>().material = newMaterial;
+            }
+		}
 	}
 
 	private void OnDisable()
@@ -31,6 +41,7 @@ public class Block : MonoBehaviour
 			int randomIndex = (int)(Random.value * (rotations.Count));
 			transform.rotation = Quaternion.Euler(0f, rotations[randomIndex], 0f);
 		}
+        
 	}
 
 	public virtual void Drop()

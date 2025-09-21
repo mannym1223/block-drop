@@ -8,4 +8,6 @@ public class BlockTypeList : ScriptableObject
     private List<Block> blockList;
 
     public List<Block> BlockList => blockList;
+
+    public List<Material> materials = new List<Material>();
 }

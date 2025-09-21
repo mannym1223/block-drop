@@ -54,6 +54,8 @@ MonoBehaviour:
   - 90
   - 180
   - 270
+  blockTypes: {fileID: 11400000, guid: 175a1cdbe26a6264581bf17564bed48f, type: 2}
+  outlineBox: {fileID: 0}
   width: 2
   length: 1
   height: 3
@@ -130,7 +132,7 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: 1853003612016372093, guid: f79fb49e1dbc97243bfa0458b6a3370b, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.9
+      value: 0.8
       objectReference: {fileID: 0}
     - target: {fileID: 1853003612016372093, guid: f79fb49e1dbc97243bfa0458b6a3370b, type: 3}
       propertyPath: m_LocalScale.y
@@ -138,7 +140,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1853003612016372093, guid: f79fb49e1dbc97243bfa0458b6a3370b, type: 3}
       propertyPath: m_LocalScale.z
-      value: 1.9
+      value: 1.8
       objectReference: {fileID: 0}
     - target: {fileID: 1853003612016372093, guid: f79fb49e1dbc97243bfa0458b6a3370b, type: 3}
       propertyPath: m_LocalPosition.x
@@ -146,7 +148,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 1853003612016372093, guid: f79fb49e1dbc97243bfa0458b6a3370b, type: 3}
       propertyPath: m_LocalPosition.y
-      value: -4.549
+      value: -4.606
       objectReference: {fileID: 0}
     - target: {fileID: 1853003612016372093, guid: f79fb49e1dbc97243bfa0458b6a3370b, type: 3}
       propertyPath: m_LocalPosition.z
