@@ -23,18 +23,21 @@ public class BlockDropManager : MonoBehaviour
     public Transform gameOverLimit;
     public GameObject gameOverText;
     public GameObject gameOverScoreText;
+    public GameObject gameStartText;
 
 	public UnityEvent OnDropped;
     public UnityEvent OnPlayerMoved;
     public UnityEvent OnSingleRowCleared;
     public UnityEvent OnMultiRowCleared;
     public UnityEvent OnGameOver;
+    public UnityEvent OnGameStarted;
     public UnityEvent<int> OnScoreChanged;
     public float dropDelay = 0.2f; // used by blocks
 
     protected int score;
 	protected List<BaseCube> allCubes = new();
     protected bool isGameOver;
+    protected bool isGameStarted;
 
     private InputAction restartAction;
 
@@ -48,17 +51,28 @@ public class BlockDropManager : MonoBehaviour
     {
         restartAction = InputSystem.actions.FindAction("Restart");
         OnDropped?.AddListener(SpawnBlock);
-		SpawnBlock();
+		//SpawnBlock();
     }
 
 	private void OnDisable()
 	{
         OnDropped?.RemoveAllListeners();
+        OnPlayerMoved?.RemoveAllListeners();
+        OnSingleRowCleared?.RemoveAllListeners();
+        OnMultiRowCleared?.RemoveAllListeners();
+        OnGameOver?.RemoveAllListeners();
+        OnGameStarted?.RemoveAllListeners();
 	}
 
 	// Update is called once per frame
 	void Update()
     {
+        if (!isGameStarted && restartAction?.ReadValue<float>() > 0f)
+        {
+            isGameStarted = true;
+            StartGame();
+            OnGameStarted?.Invoke();
+        }
         if (isGameOver && restartAction?.ReadValue<float>() > 0f)
         {
             SceneManager.LoadScene(0); // restart the scene
@@ -84,6 +98,12 @@ public class BlockDropManager : MonoBehaviour
     {
         score += scoreGained;
         OnScoreChanged?.Invoke(score);
+    }
+
+    public void StartGame()
+    {
+        Destroy(gameStartText);
+        SpawnBlock();
     }
 
     public void GameOver()
