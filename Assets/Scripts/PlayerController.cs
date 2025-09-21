@@ -83,6 +83,7 @@ public class PlayerController : MonoBehaviour
                 direction.Normalize();
 				joystick.localRotation = Quaternion.Euler(currentMoveValue.y * -35, 0f, currentMoveValue.x * -35);
 				StartCoroutine(StartMoving(direction));
+                BlockDropManager.Instance.OnPlayerMoved?.Invoke();
             }
 		}
 

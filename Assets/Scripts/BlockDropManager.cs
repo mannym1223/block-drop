@@ -25,6 +25,7 @@ public class BlockDropManager : MonoBehaviour
     public GameObject gameOverScoreText;
 
 	public UnityEvent OnDropped;
+    public UnityEvent OnPlayerMoved;
     public UnityEvent<int> OnScoreChanged;
     public float dropDelay = 0.2f; // used by blocks
 

@@ -45,7 +45,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 049f7d7fc7426304b81ea6e4af782635, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AudioManager
-  droppedAudio: {fileID: 8300000, guid: beb5b46fe33edf148a0daa802a386bd9, type: 3}
+  playerMoveClip: {fileID: 8300000, guid: b6bd093149929ca4d8146de126c62b72, type: 3}
+  playerMoveVolume: 0.8
+  droppedClip: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
+  droppedVolume: 0.5
 --- !u!82 &296728798090671951
 AudioSource:
   m_ObjectHideFlags: 0
@@ -59,7 +62,7 @@ AudioSource:
   m_audioClip: {fileID: 0}
   m_Resource: {fileID: 0}
   m_PlayOnAwake: 0
-  m_Volume: 0.5
+  m_Volume: 1
   m_Pitch: 1
   Loop: 0
   Mute: 0
