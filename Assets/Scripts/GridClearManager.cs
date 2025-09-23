@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using static UnityEngine.Rendering.DebugUI.Table;
 
 public class GridClearManager : MonoBehaviour
 {
@@ -33,18 +34,24 @@ public class GridClearManager : MonoBehaviour
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
     {
-        BlockDropManager.Instance.OnDropped?.AddListener(CheckIfFull);
+        BlockDropManager.Instance.OnDropped?.AddListener(StartCheckIfFull);
     }
 
 	private void OnDisable()
 	{
-		BlockDropManager.Instance.OnDropped?.RemoveListener(CheckIfFull);
+		BlockDropManager.Instance.OnDropped?.RemoveListener(StartCheckIfFull);
+		StopAllCoroutines();
+	}
+
+	public void StartCheckIfFull()
+	{
+		StartCoroutine(CheckIfFull());
 	}
 
 	/// <summary>
 	/// Checks if ANY row is full, then clears
 	/// </summary>
-	protected void CheckIfFull()
+	protected IEnumerator CheckIfFull()
 	{
 
 		//List<int> clearedRows = new();
@@ -54,6 +61,8 @@ public class GridClearManager : MonoBehaviour
 			if (CheckIfRowFull(rowIndex))
 			{
 				numCleared++;
+				// row is full so clear it
+				yield return StartCoroutine(FlashBlocksInRowThenDestroy(rowIndex));
 			}
 		}
 
@@ -87,8 +96,6 @@ public class GridClearManager : MonoBehaviour
 			}
 		}
 
-		// row is full so clear it
-		StartCoroutine(FlashBlocksInRowThenDestroy(row));
 		return true;
 	}
 
@@ -122,5 +129,10 @@ public class GridClearManager : MonoBehaviour
 			}
 			cubeChecker.ResetCollider();
 		}
+	}
+
+	protected void MoveRowsDown()
+	{
+
 	}
 }
