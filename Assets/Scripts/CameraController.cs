@@ -4,7 +4,7 @@ using UnityEngine.InputSystem;
 
 public class CameraController : MonoBehaviour
 {
-	public float rotateSpeed = 20f;
+	public float rotateSpeed = 10f;
 
     InputAction previousCamAction;
     InputAction nextCamAction;
@@ -13,8 +13,8 @@ public class CameraController : MonoBehaviour
 	bool nextCamValue;
 	bool isRotating;
 
-	float[] rotations = new float[4];
-	int currentRotation = 0;
+	float[] yawRotations = new float[4];
+	int currentYaw = 0;
 
 	MeshRenderer glass;
 
@@ -23,9 +23,9 @@ public class CameraController : MonoBehaviour
     {
 		previousCamAction = InputSystem.actions.FindAction("CameraPrevious");
 		nextCamAction = InputSystem.actions.FindAction("CameraNext");
-		for (int index = 0; index < rotations.Length; index++)
+		for (int index = 0; index < yawRotations.Length; index++)
 		{
-			rotations[index] = transform.rotation.y + index * 90;
+			yawRotations[index] = transform.rotation.y + index * 90;
 		}
 	}
 
@@ -41,7 +41,7 @@ public class CameraController : MonoBehaviour
 		}
 	}
 
-	private void LateUpdate()
+	private void FixedUpdate()
 	{
         if (previousCamValue && !isRotating)
 		{
@@ -55,22 +55,32 @@ public class CameraController : MonoBehaviour
 
 	IEnumerator RotateCamera(int direction)
 	{
-		int nextRotation;
-		if (direction < 0) nextRotation = rotations.Length - 1;
-		else
-		{
-			nextRotation = (currentRotation + direction) % rotations.Length;
-		}
+		int nextYaw = FindNextYawIndex(direction);
+
 		isRotating = true;
-		Debug.Log("Rotating" + direction);
-		float distanceRotated = 0f;
-		while (Mathf.Abs(distanceRotated) < 90f)
+		Vector3 currentRotation = transform.rotation.eulerAngles;
+		Quaternion newRotation = Quaternion.Euler(currentRotation.x, yawRotations[nextYaw], currentRotation.z);
+
+		while (Quaternion.Angle(transform.rotation, newRotation) > 1f)
 		{
-			float delta = rotateSpeed * Time.deltaTime * direction * 10;
-			distanceRotated += delta;
-			transform.Rotate(0f, delta, 0f);
+			transform.rotation = Quaternion.Slerp(transform.rotation, newRotation, rotateSpeed * Time.deltaTime);
+			currentRotation = transform.rotation.eulerAngles;
 			yield return new WaitForEndOfFrame();
 		}
+
+		currentYaw = nextYaw;
 		isRotating = false;
+	}
+
+	private int FindNextYawIndex(int direction)
+	{
+		int nextYaw = currentYaw;
+		if (nextYaw + direction < 0) nextYaw = yawRotations.Length - 1;
+		else
+		{
+			nextYaw = (currentYaw + direction) % yawRotations.Length;
+		}
+
+		return nextYaw;
 	}
 }
