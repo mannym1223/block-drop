@@ -62,11 +62,11 @@ public class Block : MonoBehaviour
         return true;
     }
 
-    public virtual bool CanDrop (Vector3 direction, float distance)
+    public virtual bool CanDrop (float distance)
     {
 		foreach (BaseCube cube in cubes)
 		{
-			if (!cube.CanDrop(direction, distance))
+			if (!cube.CanDrop())
 			{
 				return false;
 			}
@@ -89,7 +89,7 @@ public class Block : MonoBehaviour
 
     IEnumerator StartDropping()
     {
-        while(CanDrop(Vector3.down, 1f))
+        while(CanDrop(1f))
         {
             transform.Translate(Vector3.down);
             yield return new WaitForSeconds(BlockDropManager.Instance.dropDelay);

@@ -54,15 +54,20 @@ public class GridClearManager : MonoBehaviour
 	protected IEnumerator CheckIfFull()
 	{
 
-		//List<int> clearedRows = new();
+		List<int> unclearRows = new();
 		int numCleared = 0;
 		for (int rowIndex = 0; rowIndex < rows.Count; rowIndex++)
 		{
 			if (CheckIfRowFull(rowIndex))
 			{
 				numCleared++;
+
 				// row is full so clear it
 				yield return StartCoroutine(FlashBlocksInRowThenDestroy(rowIndex));
+			}
+			else
+			{
+				unclearRows.Add(rowIndex);
 			}
 		}
 
@@ -77,6 +82,8 @@ public class GridClearManager : MonoBehaviour
 				BlockDropManager.Instance.OnSingleRowCleared?.Invoke();
 			}
 			BlockDropManager.Instance.IncreaseScore(CalculateScore(numCleared));
+			yield return new WaitForEndOfFrame();
+			yield return StartCoroutine(MoveRowsDown(unclearRows));
 		}
 	}
 
@@ -131,8 +138,34 @@ public class GridClearManager : MonoBehaviour
 		}
 	}
 
-	protected void MoveRowsDown()
+	protected IEnumerator MoveRowsDown(List<int> rows)
 	{
+		var wait = new WaitForSeconds(BlockDropManager.Instance.dropDelay);
 
+		foreach (int row in rows)
+		{
+			bool rowDropped = false;
+			while (!rowDropped)
+			{
+				foreach (CubeCheckCollider cubeCheck in cubeChecks[row])
+				{
+					if (cubeCheck.cube == null) // no cube in this position
+					{
+						continue;
+					}
+					else if(!cubeCheck.cube.CanDrop()) // cube has landed
+					{
+						rowDropped = true;
+						cubeCheck.ResetCollider();
+					}
+					else // cube still moving down
+					{
+						cubeCheck.cube.ShiftDown();
+					}
+				}
+
+				yield return wait;
+			}
+		}
 	}
 }

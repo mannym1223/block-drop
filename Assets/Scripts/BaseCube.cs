@@ -7,9 +7,9 @@ public class BaseCube : MonoBehaviour
 		return Physics.Raycast(transform.position, direction, distance, LayerMask.GetMask("Spawn"));
 	}
 
-	public bool CanDrop(Vector3 direction, float distance)
+	public bool CanDrop()
 	{
-		return !Physics.Raycast(transform.position, direction, distance, LayerMask.GetMask("InactiveBlock", "Platform"));
+		return !Physics.Raycast(transform.position, Vector3.down, 1f, LayerMask.GetMask("InactiveBlock", "Platform"));
 	}
 
 	public void ShiftDown()
