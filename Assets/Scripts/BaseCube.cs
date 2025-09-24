@@ -9,12 +9,18 @@ public class BaseCube : MonoBehaviour
 
 	public bool CanDrop()
 	{
-		return !Physics.Raycast(transform.position, Vector3.down, 1f, LayerMask.GetMask("InactiveBlock", "Platform"));
+		return !Physics.Raycast(transform.position, Vector3.down, 1f, 
+							LayerMask.GetMask(BlockDropManager.INACTIVE_BLOCK, "Platform", BlockDropManager.SHIFTED_BLOCK));
 	}
 
 	public void ShiftDown()
 	{
 		transform.Translate(Vector3.down);
+	}
+
+	public void ShiftDown(int distance)
+	{
+		transform.Translate(Vector3.down * distance);
 	}
 
 	public void LandCube()

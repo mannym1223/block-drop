@@ -1,7 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor.PackageManager.Requests;
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI.Table;
 
 public class GridClearManager : MonoBehaviour
 {
@@ -11,6 +11,8 @@ public class GridClearManager : MonoBehaviour
 	public List<GameObject> rows; //parent object of each row of cubes
 
 	protected CubeCheckCollider[][] cubeChecks;
+
+	private bool isChecking;
 
 	private void Awake()
 	{
@@ -45,6 +47,10 @@ public class GridClearManager : MonoBehaviour
 
 	public void StartCheckIfFull()
 	{
+		if (isChecking)
+		{
+			return;
+		}
 		StartCoroutine(CheckIfFull());
 	}
 
@@ -53,26 +59,31 @@ public class GridClearManager : MonoBehaviour
 	/// </summary>
 	protected IEnumerator CheckIfFull()
 	{
-
-		List<int> unclearRows = new();
+		isChecking = true;
+		bool[] unclearRows = new bool[rows.Count];
 		int numCleared = 0;
+		yield return new WaitForEndOfFrame();
 		for (int rowIndex = 0; rowIndex < rows.Count; rowIndex++)
 		{
 			if (CheckIfRowFull(rowIndex))
 			{
 				numCleared++;
+				unclearRows[rowIndex] = false;
 
 				// row is full so clear it
 				yield return StartCoroutine(FlashBlocksInRowThenDestroy(rowIndex));
 			}
 			else
 			{
-				unclearRows.Add(rowIndex);
+				unclearRows[rowIndex] = true;
 			}
 		}
 
 		if (numCleared > 0)
 		{
+			yield return new WaitForEndOfFrame();
+			yield return StartCoroutine(MoveRowsDown(unclearRows));
+
 			if (numCleared > 1)
 			{
 				BlockDropManager.Instance.OnMultiRowCleared?.Invoke();
@@ -81,10 +92,11 @@ public class GridClearManager : MonoBehaviour
 			{
 				BlockDropManager.Instance.OnSingleRowCleared?.Invoke();
 			}
+			Debug.Log("Num cleared: " + numCleared);
+			
 			BlockDropManager.Instance.IncreaseScore(CalculateScore(numCleared));
-			yield return new WaitForEndOfFrame();
-			yield return StartCoroutine(MoveRowsDown(unclearRows));
 		}
+		isChecking = false;
 	}
 
 	protected bool CheckIfRowFull(int row)
@@ -95,10 +107,6 @@ public class GridClearManager : MonoBehaviour
 			if (!cubeChecker.hasBlock)
 			{
 				// row isn't full so do nothing
-				if (cubeChecker.cube != null)
-				{
-					Debug.Log(cubeChecker.cube.name);
-				}
 				return false;
 			}
 		}
@@ -114,16 +122,21 @@ public class GridClearManager : MonoBehaviour
 	protected IEnumerator FlashBlocksInRowThenDestroy(int row)
 	{
 		float timeElapsed = 0f;
+		var waitForInterval = new WaitForSeconds(rowClearInterval);
+
 		while(timeElapsed < rowClearDelay)
 		{
 			for (int cubeIndex = 0; cubeIndex < cubeChecks[row].Length; cubeIndex++)
 			{
 				// alternate between visible and invisible
-				MeshRenderer render = cubeChecks[row][cubeIndex].cube.GetComponent<MeshRenderer>();
-				render.enabled = !render.enabled;
+				if (cubeChecks[row][cubeIndex].cube != null)
+				{
+					MeshRenderer render = cubeChecks[row][cubeIndex].cube.GetComponent<MeshRenderer>();
+					render.enabled = !render.enabled;
+				}
 			}
 			
-			yield return new WaitForSeconds(rowClearInterval);
+			yield return waitForInterval;
 			timeElapsed += rowClearInterval;
 		}
 
@@ -138,33 +151,50 @@ public class GridClearManager : MonoBehaviour
 		}
 	}
 
-	protected IEnumerator MoveRowsDown(List<int> rows)
+	protected IEnumerator MoveRowsDown(bool[] unclearRows)
 	{
 		var wait = new WaitForSeconds(BlockDropManager.Instance.dropDelay);
 
-		foreach (int row in rows)
+		int dropDistance = 0;
+		// 1 2 drop
+		for (int index = 0; index < unclearRows.Length; index++)
 		{
-			bool rowDropped = false;
-			while (!rowDropped)
+			if (!unclearRows[index]) // skip cleared rows
 			{
-				foreach (CubeCheckCollider cubeCheck in cubeChecks[row])
-				{
-					if (cubeCheck.cube == null) // no cube in this position
-					{
-						continue;
-					}
-					else if(!cubeCheck.cube.CanDrop()) // cube has landed
-					{
-						rowDropped = true;
-						cubeCheck.ResetCollider();
-					}
-					else // cube still moving down
-					{
-						cubeCheck.cube.ShiftDown();
-					}
-				}
+				dropDistance++;
+				continue;
+			}
 
-				yield return wait;
+			int distanceMoved = 0;
+			// move entire row downwards
+			foreach (CubeCheckCollider cubeCheck in cubeChecks[index])
+			{
+				BaseCube cube = cubeCheck.cube;
+				if (cube == null) // no cube in this position
+				{
+					continue;
+				}
+				cube.GetComponent<Collider>().enabled = false;
+				cube.gameObject.layer = LayerMask.NameToLayer(BlockDropManager.SHIFTED_BLOCK);
+
+				cube.ShiftDown(dropDistance);
+				cubeCheck.ResetCollider();
+				cube.GetComponent<Collider>().enabled = true;
+			}
+
+			distanceMoved++;
+			yield return wait;
+		}
+	}
+
+	protected void ResetAllColliders()
+	{
+		foreach (CubeCheckCollider[] cubeList in cubeChecks)
+		{
+			foreach(CubeCheckCollider cube in cubeList)
+			{
+				cube.ResetCollider();
+				
 			}
 		}
 	}

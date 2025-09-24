@@ -25,6 +25,13 @@ public class CubeCheckCollider : MonoBehaviour
 		cube = other.gameObject.GetComponent<BaseCube>();
 		checkCollider.enabled = false;
 
-		BlockDropManager.Instance.OnDropped?.Invoke();
+		if (other.gameObject.layer == LayerMask.NameToLayer(BlockDropManager.INACTIVE_BLOCK))
+		{
+			BlockDropManager.Instance.OnDropped?.Invoke();
+		}
+		else if (other.gameObject.layer == LayerMask.NameToLayer(BlockDropManager.SHIFTED_BLOCK))
+		{
+			other.gameObject.layer = LayerMask.NameToLayer(BlockDropManager.INACTIVE_BLOCK);
+		}
 	}
 }

@@ -29,6 +29,11 @@ public class CameraController : MonoBehaviour
 		}
 	}
 
+	private void OnDisable()
+	{
+		StopAllCoroutines();
+	}
+
 	private void Update()
 	{
 		if (previousCamAction != null)

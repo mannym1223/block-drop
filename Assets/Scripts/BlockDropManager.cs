@@ -3,6 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.InputSystem;
+using UnityEngine.Rendering.Universal.Internal;
 using UnityEngine.SceneManagement;
 
 public class BlockDropManager : MonoBehaviour
@@ -33,6 +34,9 @@ public class BlockDropManager : MonoBehaviour
     public UnityEvent OnGameStarted;
     public UnityEvent<int> OnScoreChanged;
     public float dropDelay = 0.2f; // used by blocks
+
+	public static readonly string INACTIVE_BLOCK = "InactiveBlock";
+	public static readonly string SHIFTED_BLOCK = "ShiftedBlock";
 
     protected int score;
 	protected List<BaseCube> allCubes = new();
