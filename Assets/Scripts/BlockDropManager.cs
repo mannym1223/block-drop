@@ -93,8 +93,8 @@ public class BlockDropManager : MonoBehaviour
             return;
         }
 
-        int randomIndex = (int)(Random.value * (blockTypes.BlockList.Count));
-        var newBlock = blockTypes.BlockList[randomIndex];
+        int randomIndex = (int)(Random.value * (blockTypes.BlockTypes.Count));
+        var newBlock = blockTypes.BlockTypes[randomIndex];
 		//player.activeBlock = Instantiate(newBlock, spawnPoint.position, spawnPoint.rotation, spawnPoint);
         //player.activeBlock.Spawned(); // TODO: replace with listener in player controller
         grid.SpawnBlock(newBlock);

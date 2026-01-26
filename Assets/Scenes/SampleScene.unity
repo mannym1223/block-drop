@@ -1098,7 +1098,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BlockDropManager
   grid: {fileID: 237625190}
-  blockTypes: {fileID: 11400000, guid: 5e98ccfbd8327684ca8c3870570bbebb, type: 2}
+  blockTypes: {fileID: 11400000, guid: 175a1cdbe26a6264581bf17564bed48f, type: 2}
   spawnPoint: {fileID: 71937264}
   player: {fileID: 1396856144}
   gameOverLimit: {fileID: 1646923572}

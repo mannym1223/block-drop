@@ -9,5 +9,10 @@ public class BlockTypeList : ScriptableObject
 
     public List<Block> BlockList => blockList;
 
-    public List<Material> materials = new List<Material>();
+	[SerializeField]
+	private List<BlockScriptable> blockTypes;
+
+	public List<BlockScriptable> BlockTypes => blockTypes;
+
+	public List<Material> materials = new List<Material>();
 }

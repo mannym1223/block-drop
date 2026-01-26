@@ -48,16 +48,17 @@ public class GridManager : MonoBehaviour
 	/// Adds the spawned block's cubes to grid
 	/// </summary>
 	/// <param name="blockPrefab"></param>
-	public void SpawnBlock(Block blockPrefab)
+	public void SpawnBlock(BlockScriptable blockPrefab)
 	{
 		Debug.Log("Spawning block...");
 
 		Material cubeMat = dropManager.blockTypes.materials[(int)(Random.value * (dropManager.blockTypes.materials.Count))];
 
-		for (int index = 0; index < blockPrefab.cubeIndices.Count; index++)
+		var cubeSpawns = blockPrefab.GetRandomRotationSpawns();
+		for (int index = 0; index < cubeSpawns.Count; index++)
 		{
 			Transform spawnPoint = dropManager.spawnPoint;
-			Vector3Int spawnIndex = blockPrefab.cubeIndices[index];
+			Vector3Int spawnIndex = cubeSpawns[index];
 			BaseCube cube = Instantiate(cubePrefab, spawnPoint.position - spawnIndex, spawnPoint.rotation, spawnPoint);
 			cube.GetComponent<Renderer>().material = cubeMat;
 
