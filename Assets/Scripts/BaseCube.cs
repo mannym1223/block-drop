@@ -2,6 +2,8 @@ using UnityEngine;
 
 public class BaseCube : MonoBehaviour
 {
+	public Vector3Int gridCell;
+
     public bool CanMove(Vector3 direction, float distance)
     {
 		return Physics.Raycast(transform.position, direction, distance, LayerMask.GetMask("Spawn"));
@@ -29,9 +31,10 @@ public class BaseCube : MonoBehaviour
 		{
 			BlockDropManager.Instance.GameOver();
 		}
-
+		/*
 		transform.SetParent(null, true);
 		GetComponent<BoxCollider>().enabled = true;
 		gameObject.layer = LayerMask.NameToLayer("InactiveBlock");
+		*/
 	}
 }

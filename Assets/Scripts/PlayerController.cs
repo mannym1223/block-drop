@@ -89,7 +89,8 @@ public class PlayerController : MonoBehaviour
         if (currentDropValue > 0f && !isMoving && activeBlock != null && !isDropping)
         {
             activeBlock.transform.SetParent(null, true);
-            activeBlock.Drop();
+            //activeBlock.Drop();
+            BlockDropManager.Instance.OnStartDropping?.Invoke();
             activeBlock = null;
             isDropping = true;
             StartCoroutine(StartMovingToStart());

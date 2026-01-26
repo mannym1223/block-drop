@@ -1,3 +1,4 @@
+using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -6,32 +7,72 @@ public class GridManager : MonoBehaviour
 {
 	public int numRows;
 	public int numCols;
-	public int height;
-
+	public int gridHeight;
 
 	public float rowClearDelay; // used for flashing effect
 	public float rowClearInterval;
 
+	public BaseCube cubePrefab;
+
+	[SerializeField]
 	protected BaseCube[,,] Cubes;
+
+	[SerializeField]
+	protected HashSet<BaseCube> currentCubes = new();
 
 	private bool isChecking;
 
+	private BlockDropManager dropManager;
+
 	private void Awake()
 	{
-		Cubes = new BaseCube[numRows, numCols, height];
-        
+		Cubes = new BaseCube[numRows, gridHeight, numCols];
+		dropManager = BlockDropManager.Instance;
 	}
 
 	// Start is called once before the first execution of Update after the MonoBehaviour is created
 	void Start()
     {
-        BlockDropManager.Instance.OnDropped?.AddListener(StartCheckIfFull);
-    }
-
+		dropManager.OnDropped?.AddListener(StartCheckIfFull);
+		dropManager.OnStartDropping?.AddListener(DropBlock);
+	}
+	
 	private void OnDisable()
 	{
-		BlockDropManager.Instance.OnDropped?.RemoveListener(StartCheckIfFull);
+		dropManager.OnDropped?.RemoveListener(StartCheckIfFull);
+		dropManager.OnStartDropping?.RemoveListener(DropBlock);
 		StopAllCoroutines();
+	}
+	
+	/// <summary>
+	/// Adds the spawned block's cubes to grid
+	/// </summary>
+	/// <param name="blockPrefab"></param>
+	public void SpawnBlock(Block blockPrefab)
+	{
+		Debug.Log("Spawning block...");
+
+		Material cubeMat = dropManager.blockTypes.materials[(int)(Random.value * (dropManager.blockTypes.materials.Count))];
+
+		for (int index = 0; index < blockPrefab.cubeIndices.Count; index++)
+		{
+			Transform spawnPoint = dropManager.spawnPoint;
+			Vector3Int spawnIndex = blockPrefab.cubeIndices[index];
+			BaseCube cube = Instantiate(cubePrefab, spawnPoint.position - spawnIndex, spawnPoint.rotation, spawnPoint);
+			cube.GetComponent<Renderer>().material = cubeMat;
+
+			Cubes[spawnIndex.x, spawnIndex.y, spawnIndex.z] = cube;
+			currentCubes.Add(cube);
+		}
+
+		dropManager.OnBlockSpawned?.Invoke();
+		Debug.Log("Spawned " + blockPrefab);
+	}
+
+	public void DropBlock()
+	{
+		Debug.Log("Drop block-------");
+		StartCoroutine(StartDroppingBlock());
 	}
 
 	public void StartCheckIfFull()
@@ -43,16 +84,65 @@ public class GridManager : MonoBehaviour
 		StartCoroutine(CheckIfAnyLevelsFull());
 	}
 
+	protected IEnumerator StartDroppingBlock()
+	{
+		while (CanDropBlock(1))
+		{
+			foreach (var cube in currentCubes)
+			{
+				// move cube down and update grid
+				cube.transform.Translate(Vector3.down);
+				Debug.Log(cube.gridCell);
+				Cubes[cube.gridCell.x, cube.gridCell.y, cube.gridCell.z] = null;
+				cube.gridCell.y++;
+				Cubes[cube.gridCell.x, cube.gridCell.y, cube.gridCell.z] = cube;
+			}
+			yield return new WaitForSeconds(dropManager.dropDelay);
+		}
+		
+		currentCubes.Clear();
+	}
+
+	protected bool CanDropBlock(int distance)
+	{
+		foreach(BaseCube cube in currentCubes)
+		{
+			Vector3Int currentCell = cube.gridCell;
+			if(cube.gridCell.y >= gridHeight)
+			{
+				Debug.Log("Cannot drop: reached last cell");
+				return false;
+			}
+			BaseCube cubeBelow = Cubes[currentCell.x, currentCell.y + 1, currentCell.z];
+
+			// Check if any are INVALID and return false if they are
+			if (currentCell != null) // null check
+			{
+				if(cubeBelow == null) // cell below is empty so cube can move
+				{
+					continue;
+				}
+				else if (!currentCubes.Contains(cubeBelow)) // cell below exists and isn't part of current block
+				{
+					Debug.Log("Cannot drop");
+					return false;
+				}
+			}
+		}
+		Debug.Log("Can drop");
+		return true;
+	}
+
 	/// <summary>
 	/// Checks if ANY level is full, then clears
 	/// </summary>
 	protected IEnumerator CheckIfAnyLevelsFull()
 	{
 		isChecking = true;
-		bool[] unclearLevels = new bool[height];
+		bool[] unclearLevels = new bool[gridHeight];
 		int numCleared = 0;
 		yield return new WaitForEndOfFrame();
-		for (int heightIndex = 0; heightIndex < height; heightIndex++)
+		for (int heightIndex = 0; heightIndex < gridHeight; heightIndex++)
 		{
 			if (CheckIfHeightLevelFull(heightIndex))
 			{
@@ -178,6 +268,8 @@ public class GridManager : MonoBehaviour
 					//cube.gameObject.layer = LayerMask.NameToLayer(BlockDropManager.SHIFTED_BLOCK);
 
 					ShiftCubeDown(cube, dropDistance);
+					Cubes[rowIndex, colIndex, heightIndex] = null;
+					Cubes[rowIndex, colIndex, heightIndex - 1] = cube;
 					//cubeCheck.ResetCollider();
 					//cube.GetComponent<Collider>().enabled = true;
 				}

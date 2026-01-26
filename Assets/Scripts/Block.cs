@@ -8,8 +8,9 @@ public class Block : MonoBehaviour
     public BlockTypeList blockTypes; // used for block colors
     public GameObject outlineBox;
 
-    public int width;
-    public int length;
+    [Tooltip("Specifies where the cubes will spawn in the grid. Must have the same number of indices as cubes.")]
+    public List<Vector3Int> cubeIndices = new List<Vector3Int>();
+
     public int height;
 
     [HideInInspector]
@@ -64,22 +65,20 @@ public class Block : MonoBehaviour
 
     public virtual bool CanDrop (float distance)
     {
+		/*
 		foreach (BaseCube cube in cubes)
 		{
 			if (!cube.CanDrop())
 			{
 				return false;
 			}
-		}
+		}*/
+
+
 		return true;
 	}
 
-    protected void CheckIfGameOver()
-    {
-
-    }
-
-    protected void SeparateCubes()
+    public void SeparateCubes()
     {
         foreach(BaseCube cube in cubes)
         {

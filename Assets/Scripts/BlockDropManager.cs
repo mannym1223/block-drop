@@ -17,6 +17,7 @@ public class BlockDropManager : MonoBehaviour
         }
     }
 
+    public GridManager grid;
     public BlockTypeList blockTypes;
     public Transform spawnPoint;
     public PlayerController player;
@@ -25,6 +26,8 @@ public class BlockDropManager : MonoBehaviour
     public GameObject gameOverScoreText;
     public GameObject gameStartText;
 
+    public UnityEvent OnBlockSpawned;
+    public UnityEvent OnStartDropping;
 	public UnityEvent OnDropped;
     public UnityEvent OnPlayerMoved;
     public UnityEvent OnSingleRowCleared;
@@ -38,7 +41,6 @@ public class BlockDropManager : MonoBehaviour
 	public static readonly string SHIFTED_BLOCK = "ShiftedBlock";
 
     protected int score;
-	protected List<BaseCube> allCubes = new();
     protected bool isGameOver;
     protected bool isGameStarted;
 
@@ -59,6 +61,7 @@ public class BlockDropManager : MonoBehaviour
 
 	private void OnDisable()
 	{
+        OnBlockSpawned?.RemoveAllListeners();
         OnDropped?.RemoveAllListeners();
         OnPlayerMoved?.RemoveAllListeners();
         OnSingleRowCleared?.RemoveAllListeners();
@@ -92,9 +95,11 @@ public class BlockDropManager : MonoBehaviour
 
         int randomIndex = (int)(Random.value * (blockTypes.BlockList.Count));
         var newBlock = blockTypes.BlockList[randomIndex];
-		player.activeBlock = Instantiate(newBlock, spawnPoint.position, spawnPoint.rotation, spawnPoint);
-        player.activeBlock.Spawned();
-        allCubes.AddRange(player.activeBlock.cubes);
+		//player.activeBlock = Instantiate(newBlock, spawnPoint.position, spawnPoint.rotation, spawnPoint);
+        //player.activeBlock.Spawned(); // TODO: replace with listener in player controller
+        grid.SpawnBlock(newBlock);
+
+        //OnBlockSpawned?.Invoke(newBlock);
 	}
 
     public void IncreaseScore(int scoreGained)
