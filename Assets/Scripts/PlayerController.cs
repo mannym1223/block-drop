@@ -95,6 +95,12 @@ public class PlayerController : MonoBehaviour
             isDropping = true;
             StartCoroutine(StartMovingToStart());
         }
+        /*
+        else if (currentDropValue == 1f) // for testing
+        {
+			BlockDropManager.Instance.grid.ReplaceBlock();
+            
+		}*/
 	}
 
     /// <summary>

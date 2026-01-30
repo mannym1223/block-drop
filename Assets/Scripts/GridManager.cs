@@ -1,6 +1,7 @@
 using NUnit.Framework;
 using System.Collections;
 using System.Collections.Generic;
+using UnityEditor;
 using UnityEngine;
 
 public class GridManager : MonoBehaviour
@@ -13,6 +14,9 @@ public class GridManager : MonoBehaviour
 	public float rowClearInterval;
 
 	public BaseCube cubePrefab;
+
+	[Tooltip("Specifies the origin of blocks when spawning in the grid. This should correspond to where the spawn point is located in world space.")]
+	public Vector3Int gridSpawnIndex;
 
 	[SerializeField]
 	protected BaseCube[,,] Cubes;
@@ -36,7 +40,21 @@ public class GridManager : MonoBehaviour
 		dropManager.OnDropped?.AddListener(StartCheckIfFull);
 		dropManager.OnStartDropping?.AddListener(DropBlock);
 	}
-	
+
+	/// <summary>
+	/// For testing
+	/// </summary>
+	public void ReplaceBlock()
+	{
+		foreach (BaseCube cube in currentCubes)
+		{
+			Cubes[cube.gridCell.x, cube.gridCell.y, cube.gridCell.z] = null;
+			Destroy(cube.gameObject);
+		}
+		currentCubes.Clear();
+		SpawnBlock(BlockDropManager.Instance.blockTypes.BlockTypes[0]);
+	}
+
 	private void OnDisable()
 	{
 		dropManager.OnDropped?.RemoveListener(StartCheckIfFull);
@@ -62,7 +80,12 @@ public class GridManager : MonoBehaviour
 			BaseCube cube = Instantiate(cubePrefab, spawnPoint.position - spawnIndex, spawnPoint.rotation, spawnPoint);
 			cube.GetComponent<Renderer>().material = cubeMat;
 
-			Cubes[spawnIndex.x, spawnIndex.y, spawnIndex.z] = cube;
+			Vector3Int newIndex = spawnIndex + gridSpawnIndex;
+			Cubes[newIndex.x, newIndex.y, newIndex.z] = cube;
+			foreach (var i in cubeSpawns)
+			{
+				Debug.Log(i);
+			}
 			currentCubes.Add(cube);
 		}
 

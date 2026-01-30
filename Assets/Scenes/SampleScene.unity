@@ -1166,6 +1166,7 @@ MonoBehaviour:
   rowClearDelay: 1
   rowClearInterval: 0.2
   cubePrefab: {fileID: 8318918867293611708, guid: 8cf5ddc9f2300df4d89659fd46b0e1ca, type: 3}
+  gridSpawnIndex: {x: 3, y: 0, z: 3}
 --- !u!1 &261580439
 GameObject:
   m_ObjectHideFlags: 0
