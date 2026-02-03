@@ -29,6 +29,7 @@ public class BlockDropManager : MonoBehaviour
     public UnityEvent OnBlockSpawned;
     public UnityEvent OnStartDropping;
 	public UnityEvent OnDropped;
+    public UnityEvent<Vector3> OnPlayerTryMove;
     public UnityEvent OnPlayerMoved;
     public UnityEvent OnSingleRowCleared;
     public UnityEvent OnMultiRowCleared;
@@ -87,7 +88,7 @@ public class BlockDropManager : MonoBehaviour
 
     public void SpawnBlock()
     {
-        if (player.activeBlock != null)
+        if (grid.HasCurrentBlock())
         {
             Debug.Log("Cannot spawn new block. Active block exists.");
             return;
@@ -111,7 +112,7 @@ public class BlockDropManager : MonoBehaviour
     public void StartGame()
     {
         Destroy(gameStartText);
-        SpawnBlock();
+        //SpawnBlock();
     }
 
     public void GameOver()

@@ -5,17 +5,20 @@ using UnityEngine.InputSystem;
 public class PlayerController : MonoBehaviour
 {
     public Transform rope;
-    [HideInInspector]
-    public Block activeBlock;
+    //[HideInInspector]
+    //public Block activeBlock;
     public float moveStep = 1f;
     public float moveSpeed = 5.0f;
     public float resetSpeed = 5.0f;
     [HideInInspector]
     public Camera mainCam;
+    [HideInInspector]
+    public Vector3Int gridPosition;
     public Transform joystick;
 
     InputAction moveAction;
-    private Vector2 currentMoveValue;
+	private bool isBlockActive;
+	private Vector2 currentMoveValue;
     private bool isMoving = false;
     private Vector3 startPosition;
 
@@ -50,14 +53,17 @@ public class PlayerController : MonoBehaviour
 
 		if (currentMoveValue != null && !isMoving && currentMoveValue.magnitude != 0f)
 		{
-			bool goForward;
-            bool goRight;
+			//bool goForward;
+            //bool goRight;
 
-			Vector3 mainCamForward = mainCam.transform.forward * currentMoveValue.y;
-            mainCamForward.y = 0f;
-            mainCamForward.Normalize();
-			Vector3 mainCamRight = mainCam.transform.right * currentMoveValue.x;
+			Vector3 forward = mainCam.transform.forward * currentMoveValue.y;
+            forward.y = 0f;
+            forward.Normalize();
+			Vector3 right = mainCam.transform.right * currentMoveValue.x;
 
+            BlockDropManager.Instance.OnPlayerTryMove?.Invoke((forward + right).normalized);
+
+            /*
 			if (activeBlock == null) // move freely while no active block
 			{
 				goForward = Physics.Raycast(transform.position, mainCamForward, moveStep, LayerMask.GetMask("Spawn"));
@@ -84,14 +90,15 @@ public class PlayerController : MonoBehaviour
 				StartCoroutine(StartMoving(direction));
                 BlockDropManager.Instance.OnPlayerMoved?.Invoke();
             }
+            */
 		}
 
-        if (currentDropValue > 0f && !isMoving && activeBlock != null && !isDropping)
+        if (currentDropValue > 0f && !isMoving && isBlockActive && !isDropping)
         {
-            activeBlock.transform.SetParent(null, true);
+            //activeBlock.transform.SetParent(null, true);
             //activeBlock.Drop();
             BlockDropManager.Instance.OnStartDropping?.Invoke();
-            activeBlock = null;
+            isBlockActive = false;
             isDropping = true;
             StartCoroutine(StartMovingToStart());
         }
@@ -100,8 +107,14 @@ public class PlayerController : MonoBehaviour
         {
 			BlockDropManager.Instance.grid.ReplaceBlock();
             
-		}*/
+		}
+            */
 	}
+
+    public void MovePlayer(Vector3 direction)
+    {
+        StartCoroutine(StartMoving(direction));
+    }
 
     /// <summary>
     /// Move player to next point in grid

@@ -39,6 +39,14 @@ public class GridManager : MonoBehaviour
     {
 		dropManager.OnDropped?.AddListener(StartCheckIfFull);
 		dropManager.OnStartDropping?.AddListener(DropBlock);
+		dropManager.OnPlayerTryMove?.AddListener(Move);
+
+		dropManager.player.gridPosition = gridSpawnIndex;
+	}
+
+	public bool HasCurrentBlock()
+	{
+		return currentCubes.Count > 0;
 	}
 
 	/// <summary>
@@ -57,8 +65,6 @@ public class GridManager : MonoBehaviour
 
 	private void OnDisable()
 	{
-		dropManager.OnDropped?.RemoveListener(StartCheckIfFull);
-		dropManager.OnStartDropping?.RemoveListener(DropBlock);
 		StopAllCoroutines();
 	}
 	
@@ -73,9 +79,9 @@ public class GridManager : MonoBehaviour
 		Material cubeMat = dropManager.blockTypes.materials[(int)(Random.value * (dropManager.blockTypes.materials.Count))];
 
 		var cubeSpawns = blockPrefab.GetRandomRotationSpawns();
+		Transform spawnPoint = dropManager.spawnPoint;
 		for (int index = 0; index < cubeSpawns.Count; index++)
 		{
-			Transform spawnPoint = dropManager.spawnPoint;
 			Vector3Int spawnIndex = cubeSpawns[index];
 			BaseCube cube = Instantiate(cubePrefab, spawnPoint.position - spawnIndex, spawnPoint.rotation, spawnPoint);
 			cube.GetComponent<Renderer>().material = cubeMat;
@@ -91,6 +97,33 @@ public class GridManager : MonoBehaviour
 
 		dropManager.OnBlockSpawned?.Invoke();
 		Debug.Log("Spawned " + blockPrefab);
+	}
+
+	public void Move(Vector3 direction)
+	{
+		var player = dropManager.player;
+		Vector3Int newPosition = player.gridPosition;
+		newPosition.x += (int)direction.x;
+		newPosition.z += (int)direction.z;
+		Debug.Log("direction: " + direction);
+		Debug.Log("new position: " + newPosition);
+
+		// out of bounds
+		if (newPosition.x >= Cubes.GetLength(0) || newPosition.z >= Cubes.GetLength(2)
+			|| newPosition.x < 0 || newPosition.z < 0)
+		{
+			return;
+		}
+
+		if (currentCubes.Count == 0) // no active block so move freely within grid
+		{
+			player.gridPosition = newPosition;
+			player.MovePlayer(direction);
+		}
+		else // have to check if cubes can move in direction
+		{
+
+		}
 	}
 
 	public void DropBlock()
