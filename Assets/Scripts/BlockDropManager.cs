@@ -57,7 +57,7 @@ public class BlockDropManager : MonoBehaviour
     {
         restartAction = InputSystem.actions.FindAction("Restart");
         OnDropped?.AddListener(SpawnBlock);
-		//SpawnBlock();
+		SpawnBlock();
     }
 
 	private void OnDisable()
@@ -98,7 +98,7 @@ public class BlockDropManager : MonoBehaviour
         var newBlock = blockTypes.BlockTypes[randomIndex];
 		//player.activeBlock = Instantiate(newBlock, spawnPoint.position, spawnPoint.rotation, spawnPoint);
         //player.activeBlock.Spawned(); // TODO: replace with listener in player controller
-        grid.SpawnBlock(newBlock);
+        //grid.SpawnBlock(newBlock);
 
         //OnBlockSpawned?.Invoke(newBlock);
 	}

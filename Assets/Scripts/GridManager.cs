@@ -103,8 +103,8 @@ public class GridManager : MonoBehaviour
 	{
 		var player = dropManager.player;
 		Vector3Int newPosition = player.gridPosition;
-		newPosition.x += (int)direction.x;
-		newPosition.z += (int)direction.z;
+		newPosition.x += Mathf.RoundToInt(direction.x);
+		newPosition.z += Mathf.RoundToInt(direction.z);
 		Debug.Log("direction: " + direction);
 		Debug.Log("new position: " + newPosition);
 
